@@ -1,82 +1,150 @@
-const URL_SHEET = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSGjEjirs_Rw7zIxTI0CdzSRgn2REAc8H_J0tXnlIn9m57hgvM71XmRduBluxcvz6tByhKkpaYcOxqO/pub?gid=0&single=true&output=csv";
+const DASHBOARD_URL = 
+"https://docs.google.com/spreadsheets/d/1hb12dfcZsorpTwGC2InhzugmvQcYmoW042Hi5djlXlg/gviz/tq?tqx=out:csv&gid=0";
 
 
-fetch(URL_SHEET)
-.then(response => response.text())
+const PROGRAMAS_URL = 
+"https://docs.google.com/spreadsheets/d/1hb12dfcZsorpTwGC2InhzugmvQcYmoW042Hi5djlXlg/gviz/tq?tqx=out:csv&gid=896499581";
+
+
+
+// Cargar Dashboard
+
+fetch(DASHBOARD_URL)
+
+.then(res => res.text())
+
 .then(data => {
 
-    let filas = data.split("\n");
 
-    let valores = {};
-
-    filas.forEach(fila => {
-
-        let columnas = fila.split(",");
-
-        if(columnas.length >= 2){
-
-            let clave = columnas[0].trim();
-            let valor = columnas[1].trim();
-
-            valores[clave] = Number(valor);
-
-        }
-
-    });
+let filas = data.split("\n");
 
 
-    document.getElementById("total").innerHTML = valores.total;
-
-    document.getElementById("meta").innerHTML = valores.meta;
+let datos = {};
 
 
-    let porcentaje = (valores.total / valores.meta) * 100;
+filas.forEach(fila=>{
+
+let columnas=fila.split(",");
 
 
-    document.getElementById("porcentaje").innerHTML =
-    porcentaje.toFixed(2) + "%";
+if(columnas.length>=2){
+
+let clave=
+columnas[0].replace(/"/g,"").trim();
 
 
-    document.getElementById("progreso").style.width =
-    porcentaje + "%";
+let valor=
+columnas[1].replace(/"/g,"").trim();
+
+
+datos[clave]=valor;
+
+}
+
+});
 
 
 
-    document.getElementById("bachillerato").innerHTML =
-    valores.bachillerato;
+document.getElementById("total").innerHTML =
+datos.total;
 
 
-    document.getElementById("licenciaturas").innerHTML =
-    valores.licenciaturas;
-
-
-    document.getElementById("ingenieria").innerHTML =
-    valores.ingenieria;
-
-
-    document.getElementById("especialidad").innerHTML =
-    valores.especialidad;
-
-
-    document.getElementById("maestrias").innerHTML =
-    valores.maestrias;
-
-
-    document.getElementById("doctorado").innerHTML =
-    valores.doctorado;
+document.getElementById("meta").innerHTML =
+datos.meta;
 
 
 
-    document.getElementById("hoy").innerHTML =
-    "+" + valores.hoy;
+let porcentaje =
+(datos.total/datos.meta)*100;
 
 
-    document.getElementById("semana").innerHTML =
-    "+" + valores.semana;
+document.getElementById("porcentaje").innerHTML =
+porcentaje.toFixed(1)+"%";
 
 
-    document.getElementById("mes").innerHTML =
-    "+" + valores.mes;
+document.getElementById("progreso").style.width =
+porcentaje+"%";
+
+
+});
+
+
+
+
+// Cargar Programas
+
+
+fetch(PROGRAMAS_URL)
+
+.then(res=>res.text())
+
+.then(data=>{
+
+
+let filas=data.split("\n");
+
+
+
+let contenedor =
+document.querySelector(".grid");
+
+
+
+// limpiamos tarjetas
+
+contenedor.innerHTML="";
+
+
+
+filas.slice(1).forEach(fila=>{
+
+
+let columnas=fila.split(",");
+
+
+
+if(columnas.length>=2){
+
+
+let nombre=
+columnas[0]
+.replace(/"/g,"")
+.trim();
+
+
+let cantidad=
+columnas[1]
+.replace(/"/g,"")
+.trim();
+
+
+
+let tarjeta=document.createElement("div");
+
+
+tarjeta.className="card";
+
+
+tarjeta.innerHTML=`
+
+<h3>${nombre}</h3>
+
+<strong>${cantidad}</strong>
+
+<p>inscritos</p>
+
+`;
+
+
+
+contenedor.appendChild(tarjeta);
+
+
+}
+
+
+
+});
 
 
 });
