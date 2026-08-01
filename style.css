@@ -1,0 +1,5 @@
+body{margin:0;background:#0d1b2a;font-family:Arial,sans-serif;color:#fff;display:flex;justify-content:center;align-items:center;min-height:100vh}
+.card{width:min(900px,95%);background:#132238;padding:30px;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+h1{text-align:center} .sub{text-align:center;color:#bfc7d5}#counter{text-align:center;font-size:96px;font-weight:bold;color:#dfe7ef}
+.bar{height:20px;background:#2e4057;border-radius:20px;overflow:hidden}.bar div{height:100%;background:linear-gradient(90deg,#6aa6ff,#d9d9d9);width:0}
+#pct{text-align:center}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:20px 0}.grid div{background:#1d2f49;padding:15px;border-radius:12px}li{margin:6px 0}
