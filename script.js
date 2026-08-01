@@ -1,29 +1,67 @@
-const meta=900,total=453;
-const programs=[
-'Bachillerato en Mantenimiento Automotriz',
-'Bachillerato en Programación',
-'Bachillerato en Servicios de Hospedaje',
-'Bachillerato en Puericultura',
-'Doctorado en Educación',
-'Especialidad en Mecánica Automotriz',
-'Ingeniería en Mecánica Automotriz',
-'Licenciatura en Criminología y Criminalística',
-'Chef Profesional',
-'Licenciatura en Arquitectura',
-'Licenciatura en Administración de Empresas',
-'Licenciatura en Derecho',
-'Licenciatura en Pedagogía',
-'Licenciatura en Gastronomía',
-'Licenciatura en Turismo',
-'Licenciatura en Seguridad Pública',
-'Maestría en Derecho Penal',
-'Maestría en Formación Docente',
-'Maestría en Dirección de Negocios'
-];
-let n=0,c=document.getElementById('counter');
-const t=setInterval(()=>{n+=Math.ceil((total-n)/8);if(n>=total){n=total;clearInterval(t)};c.textContent=n;},25);
-document.getElementById('fill').style.width=(total/meta*100)+'%';
-document.getElementById('pct').textContent=(total/meta*100).toFixed(1)+'% de la meta';
-document.getElementById('time').textContent=new Date().toLocaleString();
-const ul=document.getElementById('programs');
-programs.forEach(p=>{let li=document.createElement('li');li.textContent=p+' — 0';ul.appendChild(li);});
+fetch("datos.json")
+
+.then(res=>res.json())
+
+.then(data=>{
+
+
+document.getElementById("total").innerHTML=data.total;
+
+document.getElementById("meta").innerHTML=data.meta;
+
+
+let porcentaje=
+(data.total/data.meta)*100;
+
+
+document.getElementById("porcentaje")
+.innerHTML=porcentaje.toFixed(2)+"%";
+
+
+document.getElementById("progreso")
+.style.width=porcentaje+"%";
+
+
+
+document.getElementById("bachillerato").innerHTML=
+data.niveles.bachillerato;
+
+
+document.getElementById("licenciaturas").innerHTML=
+data.niveles.licenciaturas;
+
+
+document.getElementById("ingenieria").innerHTML=
+data.niveles.ingenieria;
+
+
+document.getElementById("especialidad").innerHTML=
+data.niveles.especialidad;
+
+
+document.getElementById("maestrias").innerHTML=
+data.niveles.maestrias;
+
+
+document.getElementById("doctorado").innerHTML=
+data.niveles.doctorado;
+
+
+
+document.getElementById("hoy").innerHTML=
+"+"+data.crecimiento.hoy;
+
+
+document.getElementById("semana").innerHTML=
+"+"+data.crecimiento.semana;
+
+
+document.getElementById("mes").innerHTML=
+"+"+data.crecimiento.mes;
+
+
+document.getElementById("actualizado").innerHTML=
+data.actualizado;
+
+
+});
