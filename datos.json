@@ -1,0 +1,20 @@
+{
+  "meta": 900,
+  "total": 453,
+  "actualizado": "Hace 2 minutos",
+
+  "crecimiento": {
+    "hoy": 5,
+    "semana": 18,
+    "mes": 42
+  },
+
+  "niveles": {
+    "bachillerato": 120,
+    "licenciaturas": 245,
+    "ingenieria": 53,
+    "especialidad": 11,
+    "maestrias": 20,
+    "doctorado": 4
+  }
+}
