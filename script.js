@@ -1,30 +1,35 @@
 const DASHBOARD_URL =
-"https://docs.google.com/spreadsheets/d/1hb12dfcZsorpTwGC2InhzugmvQcYmoW042Hi5djlXlg/gviz/tq?tqx=out:csv&gid=0";
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vSGjEjirs_Rw7zIxTI0CdzSRgn2REAc8H_J0tXnlIn9m57hgvM71XmRduBluxcvz6tByhKkpaYcOxqO/pub?gid=0&single=true&output=csv";
 
 
 const PROGRAMAS_URL =
-"https://docs.google.com/spreadsheets/d/1hb12dfcZsorpTwGC2InhzugmvQcYmoW042Hi5djlXlg/gviz/tq?tqx=out:csv&gid=896499581";
+"https://docs.google.com/spreadsheets/d/e/2PACX-1vSGjEjirs_Rw7zIxTI0CdzSRgn2REAc8H_J0tXnlIn9m57hgvM71XmRduBluxcvz6tByhKkpaYcOxqO/pub?gid=896499581&single=true&output=csv";
 
 
 
-// ======================
-// DASHBOARD
-// ======================
+// ==========================
+// LEER DASHBOARD
+// ==========================
 
 fetch(DASHBOARD_URL)
-.then(r => r.text())
+.then(res => res.text())
 .then(data => {
 
-    let filas = data.split("\n");
+    console.log("Dashboard recibido:", data);
+
+
+    let filas = data.trim().split("\n");
 
     let datos = {};
+
 
     filas.forEach(fila => {
 
         let columnas = fila.split(",");
 
+
         let clave = columnas[0]
-        ?.replace(/"/g,"")
+        .replace(/"/g,"")
         .trim()
         .toLowerCase();
 
@@ -34,16 +39,14 @@ fetch(DASHBOARD_URL)
         .trim();
 
 
-        if(clave){
-            datos[clave] = valor;
-        }
+        datos[clave] = valor;
 
     });
 
 
-    document.getElementById("total").innerHTML = datos.total;
-
     document.getElementById("meta").innerHTML = datos.meta;
+
+    document.getElementById("total").innerHTML = datos.total;
 
 
     let porcentaje =
@@ -51,11 +54,11 @@ fetch(DASHBOARD_URL)
 
 
     document.getElementById("porcentaje").innerHTML =
-    porcentaje.toFixed(1)+"%";
+    porcentaje.toFixed(1) + "%";
 
 
     document.getElementById("progreso").style.width =
-    porcentaje+"%";
+    porcentaje + "%";
 
 
 });
@@ -63,58 +66,61 @@ fetch(DASHBOARD_URL)
 
 
 
-// ======================
-// PROGRAMAS
-// ======================
-
+// ==========================
+// LEER PROGRAMAS
+// ==========================
 
 fetch(PROGRAMAS_URL)
-.then(r => r.text())
+.then(res => res.text())
 .then(data => {
 
 
-    let filas = data.split("\n");
+    console.log("Programas recibido:", data);
+
+
+    let filas = data.trim().split("\n");
 
 
     let contenedor =
-    document.querySelector(".grid");
+    document.getElementById("programas");
 
 
-    contenedor.innerHTML="";
+    contenedor.innerHTML = "";
 
 
 
     filas.slice(1).forEach(fila => {
 
 
-        let columnas = fila
-        .split(",")
-        .map(x => x.replace(/"/g,"").trim())
-        .filter(x => x !== "");
+        let columnas = fila.match(/(".*?"|[^",]+)/g);
 
 
 
-        if(columnas.length >= 2){
+        if(columnas && columnas.length >= 2){
 
 
-            let nombre = columnas[0];
+            let nombre = columnas[0]
+            .replace(/"/g,"")
+            .trim();
 
 
-            let cantidad = columnas[1];
+            let inscritos = columnas[1]
+            .replace(/"/g,"")
+            .trim();
 
 
 
             let tarjeta = document.createElement("div");
 
 
-            tarjeta.className="card";
+            tarjeta.className = "card";
 
 
             tarjeta.innerHTML = `
 
             <h3>${nombre}</h3>
 
-            <strong>${cantidad}</strong>
+            <strong>${inscritos}</strong>
 
             <p>inscritos</p>
 
@@ -128,7 +134,6 @@ fetch(PROGRAMAS_URL)
 
 
     });
-
 
 
 });
