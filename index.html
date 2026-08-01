@@ -1,109 +1,399 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inscripciones · Panel de metas</title>
+<style>
+  :root{
+    --azul-noche: #050B16;
+    --azul-profundo: #0B1B33;
+    --azul-medio: #12294A;
+    --azul-acento: #3E7BFA;
+    --plata: #C9D3DE;
+    --plata-brillo: #F2F5F8;
+    --texto-tenue: #8CA0BC;
+    --borde: rgba(201,211,222,0.14);
+    --radio: 20px;
+  }
 
-<title>Dashboard Inscripciones ISIMA 2026</title>
+  *{box-sizing:border-box;}
 
-<link rel="stylesheet" href="style.css">
+  html,body{
+    margin:0;
+    padding:0;
+    background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(62,123,250,0.20), transparent 60%),
+      radial-gradient(900px 500px at 110% 10%, rgba(201,211,222,0.10), transparent 55%),
+      linear-gradient(180deg, var(--azul-noche) 0%, var(--azul-profundo) 100%);
+    background-attachment: fixed;
+    color: var(--plata-brillo);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Inter, Helvetica, Arial, sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
 
+  a{ color: inherit; }
+
+  .wrap{
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 64px 24px 96px;
+  }
+
+  .eyebrow{
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 12px;
+    color: var(--texto-tenue);
+    font-weight: 600;
+    text-align:center;
+    margin-bottom: 14px;
+  }
+
+  h1.titulo{
+    text-align:center;
+    font-size: clamp(22px, 3vw, 30px);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0 0 56px;
+    color: var(--plata-brillo);
+  }
+
+  .hero{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    margin-bottom: 72px;
+  }
+
+  .anillo-cont{
+    position:relative;
+    width: min(320px, 72vw);
+    height: min(320px, 72vw);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .anillo-cont svg{ width:100%; height:100%; transform: rotate(-90deg); }
+
+  .anillo-fondo{
+    fill:none;
+    stroke: rgba(201,211,222,0.10);
+    stroke-width: 14;
+  }
+
+  .anillo-progreso{
+    fill:none;
+    stroke: url(#gradAnillo);
+    stroke-width: 14;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1);
+  }
+
+  .anillo-centro{
+    position:absolute;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap: 4px;
+  }
+
+  .num-actual{
+    font-size: clamp(44px, 9vw, 64px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    background: linear-gradient(180deg, #FFFFFF 0%, var(--plata) 60%, var(--azul-acento) 130%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    line-height:1;
+  }
+
+  .num-sub{
+    font-size: 13px;
+    color: var(--texto-tenue);
+    letter-spacing: 0.02em;
+  }
+
+  .num-porcentaje{
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--azul-acento);
+    margin-top: 2px;
+  }
+
+  .hero-detalle{
+    margin-top: 28px;
+    display:flex;
+    gap: 28px;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+
+  .hero-detalle .item{
+    text-align:center;
+  }
+
+  .hero-detalle .valor{
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--plata-brillo);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .hero-detalle .etiqueta{
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--texto-tenue);
+    margin-top: 2px;
+  }
+
+  .divisor-v{
+    width:1px;
+    background: var(--borde);
+  }
+
+  .seccion-titulo{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom: 20px;
+    padding: 0 2px;
+  }
+
+  .seccion-titulo h2{
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--plata-brillo);
+    letter-spacing: 0.01em;
+    margin:0;
+  }
+
+  .seccion-titulo span{
+    font-size: 12px;
+    color: var(--texto-tenue);
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 14px;
+  }
+
+  .tarjeta{
+    background: linear-gradient(160deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015));
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    padding: 20px 20px 18px;
+    position: relative;
+    overflow:hidden;
+    backdrop-filter: blur(14px);
+    transition: transform .25s ease, border-color .25s ease, background .25s ease;
+  }
+
+  .tarjeta::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    border-radius: var(--radio);
+    padding:1px;
+    background: linear-gradient(160deg, rgba(201,211,222,0.35), rgba(201,211,222,0) 40%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events:none;
+  }
+
+  .tarjeta:hover{
+    transform: translateY(-3px);
+    border-color: rgba(201,211,222,0.30);
+    background: linear-gradient(160deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+  }
+
+  .tarjeta .nombre{
+    font-size: 13px;
+    color: var(--texto-tenue);
+    line-height: 1.35;
+    min-height: 34px;
+    margin-bottom: 14px;
+  }
+
+  .tarjeta .num{
+    font-size: 32px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--plata-brillo);
+    letter-spacing: -0.01em;
+  }
+
+  .tarjeta .barra-fondo{
+    margin-top: 12px;
+    height: 4px;
+    border-radius: 4px;
+    background: rgba(201,211,222,0.10);
+    overflow:hidden;
+  }
+
+  .tarjeta .barra-rel{
+    height:100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, var(--azul-acento), var(--plata));
+    transition: width 1s cubic-bezier(.4,0,.2,1);
+  }
+
+  .tarjeta.top .nombre{ color: var(--plata-brillo); }
+  .tarjeta.top{
+    border-color: rgba(62,123,250,0.35);
+  }
+
+  footer{
+    text-align:center;
+    margin-top: 64px;
+    font-size: 12px;
+    color: var(--texto-tenue);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .anillo-progreso, .barra-rel, .tarjeta{ transition: none; }
+  }
+
+  @media (max-width: 480px){
+    .wrap{ padding: 48px 16px 72px; }
+    .hero-detalle{ gap: 18px; }
+  }
+</style>
 </head>
-
-
 <body>
 
+<div class="wrap">
 
-<div class="container">
+  <div class="eyebrow">Ciclo de inscripciones</div>
+  <h1 class="titulo">Panel de metas de inscripción</h1>
 
+  <div class="hero">
+    <div class="anillo-cont">
+      <svg viewBox="0 0 220 220">
+        <defs>
+          <linearGradient id="gradAnillo" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#F2F5F8"/>
+            <stop offset="55%" stop-color="#C9D3DE"/>
+            <stop offset="100%" stop-color="#3E7BFA"/>
+          </linearGradient>
+        </defs>
+        <circle class="anillo-fondo" cx="110" cy="110" r="96"></circle>
+        <circle class="anillo-progreso" id="anilloProgreso" cx="110" cy="110" r="96"
+                stroke-dasharray="603.19" stroke-dashoffset="603.19"></circle>
+      </svg>
+      <div class="anillo-centro">
+        <div class="num-actual" id="numActual">0</div>
+        <div class="num-sub">inscritos</div>
+        <div class="num-porcentaje" id="numPorcentaje">0%</div>
+      </div>
+    </div>
 
-    <header>
+    <div class="hero-detalle">
+      <div class="item">
+        <div class="valor" id="detMeta">—</div>
+        <div class="etiqueta">Meta</div>
+      </div>
+      <div class="divisor-v"></div>
+      <div class="item">
+        <div class="valor" id="detFaltan">—</div>
+        <div class="etiqueta">Faltan</div>
+      </div>
+      <div class="divisor-v"></div>
+      <div class="item">
+        <div class="valor" id="detProgramas">—</div>
+        <div class="etiqueta">Programas</div>
+      </div>
+    </div>
+  </div>
 
-        <h1>UNIVERSIDAD ISIMA</h1>
+  <div class="seccion-titulo">
+    <h2>Inscritos por programa</h2>
+    <span id="ordenLabel">Ordenado de mayor a menor</span>
+  </div>
 
-        <h2>Inscripciones Ciclo 2026</h2>
+  <div class="grid" id="grid"></div>
 
-    </header>
-
-
-
-    <section class="principal">
-
-
-        <div class="numero">
-
-            <span id="total">
-                0
-            </span>
-
-            <p>
-                inscritos
-            </p>
-
-        </div>
-
-
-
-        <div class="meta">
-
-            <p>
-                Meta:
-                <strong id="meta">
-                    0
-                </strong>
-            </p>
-
-
-            <div class="barra">
-
-                <div 
-                id="progreso">
-                </div>
-
-            </div>
-
-
-            <h3 id="porcentaje">
-                0%
-            </h3>
-
-
-        </div>
-
-
-    </section>
-
-
-
-
-    <section>
-
-
-        <h2 class="titulo">
-            Programas Académicos
-        </h2>
-
-
-        <div 
-        class="grid" 
-        id="programas">
-
-        </div>
-
-
-    </section>
-
-
-
+  <footer>Los datos se leen desde <code>data.json</code> · edítalo y sube los cambios para actualizar el panel</footer>
 </div>
 
+<script>
+async function cargarDatos(){
+  try{
+    const res = await fetch('./data.json?t=' + Date.now());
+    const data = await res.json();
+    render(data);
+  }catch(e){
+    document.getElementById('grid').innerHTML =
+      '<p style="color:#8CA0BC">No se pudo cargar data.json. Verifica que el archivo exista en el mismo repositorio.</p>';
+    console.error(e);
+  }
+}
 
+function render(data){
+  const meta = data.meta;
+  const programas = [...data.programas].sort((a,b) => b.inscritos - a.inscritos);
+  const totalActual = programas.reduce((sum, p) => sum + p.inscritos, 0);
+  const porcentaje = Math.min(100, Math.round((totalActual / meta) * 100));
+  const faltan = Math.max(0, meta - totalActual);
+  const maxInscritos = Math.max(...programas.map(p => p.inscritos), 1);
 
-<script src="script.js"></script>
+  const radio = 96;
+  const circunferencia = 2 * Math.PI * radio;
+  const offset = circunferencia - (Math.min(porcentaje,100) / 100) * circunferencia;
+  const anillo = document.getElementById('anilloProgreso');
+  anillo.style.strokeDasharray = circunferencia.toFixed(2);
+  requestAnimationFrame(() => { anillo.style.strokeDashoffset = offset.toFixed(2); });
 
+  animarNumero(document.getElementById('numActual'), totalActual);
+  document.getElementById('numPorcentaje').textContent = porcentaje + '%';
+
+  document.getElementById('detMeta').textContent = meta.toLocaleString('es-MX');
+  document.getElementById('detFaltan').textContent = faltan.toLocaleString('es-MX');
+  document.getElementById('detProgramas').textContent = programas.length;
+
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  programas.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'tarjeta' + (i < 3 ? ' top' : '');
+    const anchoBarra = Math.round((p.inscritos / maxInscritos) * 100);
+    card.innerHTML = `
+      <div class="nombre">${p.nombre}</div>
+      <div class="num">${p.inscritos}</div>
+      <div class="barra-fondo"><div class="barra-rel" style="width:0%" data-w="${anchoBarra}"></div></div>
+    `;
+    grid.appendChild(card);
+  });
+
+  requestAnimationFrame(() => {
+    document.querySelectorAll('.barra-rel').forEach(b => {
+      b.style.width = b.dataset.w + '%';
+    });
+  });
+}
+
+function animarNumero(el, valorFinal){
+  const duracion = 900;
+  const inicio = performance.now();
+  function paso(ahora){
+    const progreso = Math.min(1, (ahora - inicio) / duracion);
+    const valor = Math.round(progreso * valorFinal);
+    el.textContent = valor.toLocaleString('es-MX');
+    if(progreso < 1) requestAnimationFrame(paso);
+  }
+  requestAnimationFrame(paso);
+}
+
+cargarDatos();
+</script>
 
 </body>
-
 </html>
