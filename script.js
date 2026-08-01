@@ -1,67 +1,82 @@
-fetch("datos.json")
-
-.then(res=>res.json())
-
-.then(data=>{
+const URL_SHEET = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSGjEjirs_Rw7zIxTI0CdzSRgn2REAc8H_J0tXnlIn9m57hgvM71XmRduBluxcvz6tByhKkpaYcOxqO/pub?gid=0&single=true&output=csv";
 
 
-document.getElementById("total").innerHTML=data.total;
+fetch(URL_SHEET)
+.then(response => response.text())
+.then(data => {
 
-document.getElementById("meta").innerHTML=data.meta;
+    let filas = data.split("\n");
 
+    let valores = {};
 
-let porcentaje=
-(data.total/data.meta)*100;
+    filas.forEach(fila => {
 
+        let columnas = fila.split(",");
 
-document.getElementById("porcentaje")
-.innerHTML=porcentaje.toFixed(2)+"%";
+        if(columnas.length >= 2){
 
+            let clave = columnas[0].trim();
+            let valor = columnas[1].trim();
 
-document.getElementById("progreso")
-.style.width=porcentaje+"%";
+            valores[clave] = Number(valor);
 
+        }
 
-
-document.getElementById("bachillerato").innerHTML=
-data.niveles.bachillerato;
-
-
-document.getElementById("licenciaturas").innerHTML=
-data.niveles.licenciaturas;
+    });
 
 
-document.getElementById("ingenieria").innerHTML=
-data.niveles.ingenieria;
+    document.getElementById("total").innerHTML = valores.total;
+
+    document.getElementById("meta").innerHTML = valores.meta;
 
 
-document.getElementById("especialidad").innerHTML=
-data.niveles.especialidad;
+    let porcentaje = (valores.total / valores.meta) * 100;
 
 
-document.getElementById("maestrias").innerHTML=
-data.niveles.maestrias;
+    document.getElementById("porcentaje").innerHTML =
+    porcentaje.toFixed(2) + "%";
 
 
-document.getElementById("doctorado").innerHTML=
-data.niveles.doctorado;
+    document.getElementById("progreso").style.width =
+    porcentaje + "%";
 
 
 
-document.getElementById("hoy").innerHTML=
-"+"+data.crecimiento.hoy;
+    document.getElementById("bachillerato").innerHTML =
+    valores.bachillerato;
 
 
-document.getElementById("semana").innerHTML=
-"+"+data.crecimiento.semana;
+    document.getElementById("licenciaturas").innerHTML =
+    valores.licenciaturas;
 
 
-document.getElementById("mes").innerHTML=
-"+"+data.crecimiento.mes;
+    document.getElementById("ingenieria").innerHTML =
+    valores.ingenieria;
 
 
-document.getElementById("actualizado").innerHTML=
-data.actualizado;
+    document.getElementById("especialidad").innerHTML =
+    valores.especialidad;
+
+
+    document.getElementById("maestrias").innerHTML =
+    valores.maestrias;
+
+
+    document.getElementById("doctorado").innerHTML =
+    valores.doctorado;
+
+
+
+    document.getElementById("hoy").innerHTML =
+    "+" + valores.hoy;
+
+
+    document.getElementById("semana").innerHTML =
+    "+" + valores.semana;
+
+
+    document.getElementById("mes").innerHTML =
+    "+" + valores.mes;
 
 
 });
