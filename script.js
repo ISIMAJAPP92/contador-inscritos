@@ -7,144 +7,160 @@ const PROGRAMAS_URL =
 
 
 
-// Cargar Dashboard
+// ==========================
+// CARGAR DASHBOARD
+// ==========================
 
 fetch(DASHBOARD_URL)
 
-.then(res => res.text())
+.then(response => response.text())
 
 .then(data => {
 
 
-let filas = data.split("\n");
+    let filas = data.split("\n");
+
+    let datos = {};
 
 
-let datos = {};
+    filas.forEach(fila => {
 
 
-filas.forEach(fila=>{
-
-let columnas=fila.split(",");
+        let columnas = fila.split(",");
 
 
-if(columnas.length>=2){
-
-let clave=
-columnas[0].replace(/"/g,"").trim();
+        if(columnas.length >= 2){
 
 
-let valor=
-columnas[1].replace(/"/g,"").trim();
+            let clave = columnas[0]
+            .replace(/"/g,"")
+            .trim()
+            .toLowerCase();
 
 
-datos[clave]=valor;
+            let valor = columnas[1]
+            .replace(/"/g,"")
+            .trim();
 
-}
+
+            datos[clave] = valor;
+
+
+        }
+
+
+    });
+
+
+
+    document.getElementById("total").innerHTML = datos.total;
+
+
+    document.getElementById("meta").innerHTML = datos.meta;
+
+
+
+    let porcentaje = 
+    (Number(datos.total) / Number(datos.meta)) * 100;
+
+
+
+    document.getElementById("porcentaje").innerHTML =
+    porcentaje.toFixed(1) + "%";
+
+
+
+    document.getElementById("progreso").style.width =
+    porcentaje + "%";
+
+
 
 });
 
 
 
-document.getElementById("total").innerHTML =
-datos.total;
 
 
-document.getElementById("meta").innerHTML =
-datos.meta;
-
-
-
-let porcentaje =
-(datos.total/datos.meta)*100;
-
-
-document.getElementById("porcentaje").innerHTML =
-porcentaje.toFixed(1)+"%";
-
-
-document.getElementById("progreso").style.width =
-porcentaje+"%";
-
-
-});
-
-
-
-
-// Cargar Programas
+// ==========================
+// CARGAR PROGRAMAS
+// ==========================
 
 
 fetch(PROGRAMAS_URL)
 
-.then(res=>res.text())
+.then(response => response.text())
 
-.then(data=>{
-
-
-let filas=data.split("\n");
+.then(data => {
 
 
 
-let contenedor =
-document.querySelector(".grid");
+    let filas = data.split("\n");
 
 
 
-// limpiamos tarjetas
-
-contenedor.innerHTML="";
-
-
-
-filas.slice(1).forEach(fila=>{
-
-
-let columnas=fila.split(",");
+    let contenedor = 
+    document.querySelector(".grid");
 
 
 
-if(columnas.length>=2){
-
-
-let nombre=
-columnas[0]
-.replace(/"/g,"")
-.trim();
-
-
-let cantidad=
-columnas[1]
-.replace(/"/g,"")
-.trim();
+    contenedor.innerHTML = "";
 
 
 
-let tarjeta=document.createElement("div");
-
-
-tarjeta.className="card";
-
-
-tarjeta.innerHTML=`
-
-<h3>${nombre}</h3>
-
-<strong>${cantidad}</strong>
-
-<p>inscritos</p>
-
-`;
+    filas.slice(1).forEach(fila => {
 
 
 
-contenedor.appendChild(tarjeta);
-
-
-}
+        let columnas = fila.split(",");
 
 
 
-});
+        if(columnas.length >= 2){
+
+
+
+            let nombre = columnas[0]
+            .replace(/"/g,"")
+            .trim();
+
+
+
+            // TOMAMOS SIEMPRE EL ÚLTIMO VALOR
+            let cantidad = columnas[columnas.length - 1]
+            .replace(/"/g,"")
+            .trim();
+
+
+
+            let tarjeta = document.createElement("div");
+
+
+            tarjeta.className = "card";
+
+
+
+            tarjeta.innerHTML = `
+
+            <h3>${nombre}</h3>
+
+            <strong>${cantidad}</strong>
+
+            <p>inscritos</p>
+
+            `;
+
+
+
+            contenedor.appendChild(tarjeta);
+
+
+
+        }
+
+
+
+    });
+
 
 
 });
