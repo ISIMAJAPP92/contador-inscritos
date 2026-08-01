@@ -1,20 +1,24 @@
 {
   "meta": 900,
-  "total": 453,
-  "actualizado": "Hace 2 minutos",
-
-  "crecimiento": {
-    "hoy": 5,
-    "semana": 18,
-    "mes": 42
-  },
-
-  "niveles": {
-    "bachillerato": 120,
-    "licenciaturas": 245,
-    "ingenieria": 53,
-    "especialidad": 11,
-    "maestrias": 20,
-    "doctorado": 4
-  }
+  "programas": [
+    { "nombre": "Bachillerato en Mantenimiento Automotriz", "inscritos": 44 },
+    { "nombre": "Bachillerato en Programación", "inscritos": 19 },
+    { "nombre": "Bachillerato en Servicios de Hospedaje", "inscritos": 21 },
+    { "nombre": "Bachillerato en Puericultura", "inscritos": 29 },
+    { "nombre": "Doctorado en Educación", "inscritos": 1 },
+    { "nombre": "Especialidad en Mecánica Automotriz", "inscritos": 7 },
+    { "nombre": "Ingeniería en Mecánica Automotriz", "inscritos": 17 },
+    { "nombre": "Licenciatura en Criminología y Criminalística", "inscritos": 11 },
+    { "nombre": "Chef Profesional", "inscritos": 3 },
+    { "nombre": "Licenciatura en Arquitectura", "inscritos": 6 },
+    { "nombre": "Licenciatura en Administración de Empresas", "inscritos": 7 },
+    { "nombre": "Licenciatura en Derecho", "inscritos": 5 },
+    { "nombre": "Licenciatura en Pedagogía", "inscritos": 21 },
+    { "nombre": "Licenciatura en Gastronomía", "inscritos": 27 },
+    { "nombre": "Licenciatura en Turismo", "inscritos": 14 },
+    { "nombre": "Licenciatura en Seguridad Pública", "inscritos": 2 },
+    { "nombre": "Maestría en Derecho Penal", "inscritos": 1 },
+    { "nombre": "Maestría en Formación Docente", "inscritos": 6 },
+    { "nombre": "Maestría en Dirección de Negocios", "inscritos": 1 }
+  ]
 }
